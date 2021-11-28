@@ -3,12 +3,13 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
-public class MyPanel extends JPanel{
+public class MyPanel extends JPanel {
     MyTank hero = null;
 
     public MyPanel() {
         hero = new MyTank(100, 100);
     }
+
     @Override
     public void paint(Graphics g) {
         super.paint(g);
@@ -29,6 +30,9 @@ public class MyPanel extends JPanel{
             case 0:
                 g.fill3DRect(x, y, 10, 60, false);
                 g.fill3DRect(x + 30, y, 10, 60, false);
+                g.fill3DRect(x + 10, y + 10, 20, 40, false);
+                g.fillOval(x + 10, y + 20, 20, 20);
+                g.drawLine(x + 20, y + 30, x + 20, y);
             default:
                 System.out.println("wrong direction");
         }
