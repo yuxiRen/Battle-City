@@ -2,14 +2,21 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Vector;
+
 import javax.swing.JPanel;
 
 public class MyPanel extends JPanel implements KeyListener{
     MyTank myTank = null;
+    Vector<EnemyTank> enemyTanks = new Vector<>();
+    int enemyNums = 3;
 
     public MyPanel() {
         myTank = new MyTank(100, 100);
         myTank.setSpeed(3);
+        for (int i = 0; i < enemyNums; i++) {
+            enemyTanks.add(new EnemyTank(100 * (i + 1), 0));
+        }
     }
 
     @Override
@@ -17,6 +24,10 @@ public class MyPanel extends JPanel implements KeyListener{
         super.paint(g);
         g.fillRect(0, 0, 1000, 750);//draw a black panel
         drawTank(myTank.getX(), myTank.getY(), g, myTank.getDirection(), 0);
+        for (int i = 0; i < enemyNums; i++) {
+            EnemyTank et = enemyTanks.get(i);
+            drawTank(et.getX(), et.getY(), g, et.getDirection(), 1);
+        }
     }
 
     public void drawTank(int x, int y, Graphics g, int direction, int type) {
