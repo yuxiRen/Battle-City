@@ -5,18 +5,18 @@ import java.awt.event.KeyListener;
 import javax.swing.JPanel;
 
 public class MyPanel extends JPanel implements KeyListener{
-    MyTank hero = null;
+    MyTank myTank = null;
 
     public MyPanel() {
-        hero = new MyTank(100, 100);
-        hero.setSpeed(3);
+        myTank = new MyTank(100, 100);
+        myTank.setSpeed(3);
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
         g.fillRect(0, 0, 1000, 750);//draw a black panel
-        drawTank(hero.getX(), hero.getY(), g, hero.getDirection(), 0);
+        drawTank(myTank.getX(), myTank.getY(), g, myTank.getDirection(), 0);
     }
 
     public void drawTank(int x, int y, Graphics g, int direction, int type) {
@@ -68,17 +68,17 @@ public class MyPanel extends JPanel implements KeyListener{
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_UP) {
-            hero.setDirection(0);
-            hero.moveUp();
+            myTank.setDirection(0);
+            myTank.moveUp();
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            hero.setDirection(1);
-            hero.moveRight();
+            myTank.setDirection(1);
+            myTank.moveRight();
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            hero.setDirection(2);
-            hero.moveDown();
+            myTank.setDirection(2);
+            myTank.moveDown();
         } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            hero.setDirection(3);
-            hero.moveLeft();
+            myTank.setDirection(3);
+            myTank.moveLeft();
         }
         this.repaint();
     }
