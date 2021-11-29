@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Graphics;
-
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import javax.swing.JPanel;
 
 public class MyPanel extends JPanel implements KeyListener{
@@ -14,7 +15,7 @@ public class MyPanel extends JPanel implements KeyListener{
     public void paint(Graphics g) {
         super.paint(g);
         g.fillRect(0, 0, 1000, 750);//draw a black panel
-        drawTank(hero.getX(), hero.getY(), g, 0, 0);
+        drawTank(hero.getX(), hero.getY(), g, hero.getDirection(), 0);
     }
 
     public void drawTank(int x, int y, Graphics g, int direction, int type) {
@@ -56,5 +57,29 @@ public class MyPanel extends JPanel implements KeyListener{
                 g.drawLine(x + 30, y + 20, x, y + 20);
                 break;
         }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
+            hero.setDirection(0);
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            hero.setDirection(1);
+        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            hero.setDirection(2);
+        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            hero.setDirection(3);
+        }
+        this.repaint();
+    }
+    
+    @Override
+    public void keyReleased(KeyEvent e) {
+        
     }
 }
