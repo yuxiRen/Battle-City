@@ -9,6 +9,7 @@ public class MyPanel extends JPanel implements KeyListener{
 
     public MyPanel() {
         hero = new MyTank(100, 100);
+        hero.setSpeed(3);
     }
 
     @Override
@@ -68,12 +69,16 @@ public class MyPanel extends JPanel implements KeyListener{
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_UP) {
             hero.setDirection(0);
+            hero.moveUp();
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             hero.setDirection(1);
+            hero.moveRight();
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
             hero.setDirection(2);
+            hero.moveDown();
         } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             hero.setDirection(3);
+            hero.moveLeft();
         }
         this.repaint();
     }
