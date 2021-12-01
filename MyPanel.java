@@ -24,6 +24,10 @@ public class MyPanel extends JPanel implements KeyListener{
         super.paint(g);
         g.fillRect(0, 0, 1000, 750);//draw a black panel
         drawTank(myTank.getX(), myTank.getY(), g, myTank.getDirection(), 0);
+        //draw bullet
+        if (myTank.bullet != null && myTank.bullet.isLive) {
+            g.fillRect(myTank.bullet.x, myTank.bullet.y, 1, 1);
+        }
         for (int i = 0; i < enemyNums; i++) {
             EnemyTank et = enemyTanks.get(i);
             drawTank(et.getX(), et.getY(), g, et.getDirection(), 1);
@@ -78,18 +82,21 @@ public class MyPanel extends JPanel implements KeyListener{
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_UP) {
+        int input = e.getKeyCode();
+        if (input == KeyEvent.VK_UP) {
             myTank.setDirection(0);
             myTank.moveUp();
-        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+        } else if (input == KeyEvent.VK_RIGHT) {
             myTank.setDirection(1);
             myTank.moveRight();
-        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+        } else if (input == KeyEvent.VK_DOWN) {
             myTank.setDirection(2);
             myTank.moveDown();
-        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+        } else if (input == KeyEvent.VK_LEFT) {
             myTank.setDirection(3);
             myTank.moveLeft();
+        }else if (input == KeyEvent.VK_SPACE) {
+            myTank.shot();
         }
         this.repaint();
     }
