@@ -6,7 +6,7 @@ import java.util.Vector;
 
 import javax.swing.JPanel;
 
-public class MyPanel extends JPanel implements KeyListener{
+public class MyPanel extends JPanel implements KeyListener, Runnable{
     MyTank myTank = null;
     Vector<EnemyTank> enemyTanks = new Vector<>();
     int enemyNums = 3;
@@ -26,7 +26,7 @@ public class MyPanel extends JPanel implements KeyListener{
         drawTank(myTank.getX(), myTank.getY(), g, myTank.getDirection(), 0);
         //draw bullet
         if (myTank.bullet != null && myTank.bullet.isLive) {
-            g.fillRect(myTank.bullet.x, myTank.bullet.y, 1, 1);
+            g.draw3DRect(myTank.bullet.x, myTank.bullet.y, 2, 2, false);
         }
         for (int i = 0; i < enemyNums; i++) {
             EnemyTank et = enemyTanks.get(i);
@@ -103,6 +103,17 @@ public class MyPanel extends JPanel implements KeyListener{
     
     @Override
     public void keyReleased(KeyEvent e) {
-        
+
+    }
+    @Override
+    public void run() {
+        while(true) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            this.repaint();
+        }
     }
 }
