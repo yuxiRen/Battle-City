@@ -33,16 +33,19 @@ public class MyPanel extends JPanel implements KeyListener, Runnable{
         if (myTank.bullet != null && myTank.bullet.isLive) {
             g.draw3DRect(myTank.bullet.x, myTank.bullet.y, 2, 2, false);
         }
+
         for (int i = 0; i < enemyNums; i++) {
             EnemyTank et = enemyTanks.get(i);
-            drawTank(et.getX(), et.getY(), g, et.getDirection(), 1);
-            for (int j = 0; j < et.bullets.size(); j++) {
-                Bullet bullet = et.bullets.get(j);
-                //draw bullet
-                if (bullet.isLive) {
-                    g.draw3DRect(bullet.x, bullet.y, 2, 2, false);
-                } else {
-                    et.bullets.remove(j);
+            if (et.isLive) {
+                drawTank(et.getX(), et.getY(), g, et.getDirection(), 1);
+                for (int j = 0; j < et.bullets.size(); j++) {
+                    Bullet bullet = et.bullets.get(j);
+                    // draw bullet
+                    if (bullet.isLive) {
+                        g.draw3DRect(bullet.x, bullet.y, 2, 2, false);
+                    } else {
+                        et.bullets.remove(j);
+                    }
                 }
             }
         }
@@ -89,6 +92,20 @@ public class MyPanel extends JPanel implements KeyListener, Runnable{
         }
     }
 
+    public static void hitTank(Bullet bullet, EnemyTank enemyTank) {
+        int tankDir = enemyTank.getDirection();
+        if ((tankDir == 0 || tankDir == 2) &&
+                (bullet.x > enemyTank.getX() && bullet.x < enemyTank.getX() + 40
+        && bullet.y > enemyTank.getY() && bullet.y < enemyTank.getY() + 60)) {
+            bullet.isLive = false;
+            enemyTank.isLive = false;
+        } else if ((tankDir == 1 || tankDir == 3) &&
+                (bullet.x > enemyTank.getX() && bullet.x < enemyTank.getX() + 60
+                        && bullet.y > enemyTank.getY() && bullet.y < enemyTank.getY() + 40)) {
+            bullet.isLive = false;
+            enemyTank.isLive = false;
+        }
+    }
     @Override
     public void keyTyped(KeyEvent e) {
         
@@ -126,6 +143,11 @@ public class MyPanel extends JPanel implements KeyListener, Runnable{
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }
+            if (myTank.bullet != null && myTank.bullet.isLive) {
+                for (EnemyTank et : enemyTanks) {
+                    hitTank(myTank.bullet, et);
+                }
             }
             this.repaint();
         }
