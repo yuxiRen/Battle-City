@@ -3,7 +3,7 @@ public class Tank {
     private int y;
     private int direction;
     private int speed = 2;
-    
+    Boolean isLive = true;
 
     public Tank(int x, int y) {
         this.x = x;

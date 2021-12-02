@@ -5,10 +5,8 @@ public class MyTank extends Tank{
     public MyTank(int x, int y) {
         super(x, y);
     }
-
     Bullet bullet = null;
     Vector<Bullet> bullets = new Vector<>();
-
     public void shot() {
         if (bullets.size() == 5) {
             return;
