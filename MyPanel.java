@@ -21,6 +21,8 @@ public class MyPanel extends JPanel implements KeyListener, Runnable{
         for (int i = 0; i < enemyNums; i++) {
             EnemyTank enemyTank = new EnemyTank(100 * (i + 1), 0);
             enemyTank.setDirection(2);
+            //start enemyTank thread
+            new Thread(enemyTank).start();
             Bullet bullet = new Bullet(enemyTank.getX() + 20, enemyTank.getY() + 60, enemyTank.getDirection());
             enemyTank.bullets.add(bullet);
             new Thread(bullet).start();
