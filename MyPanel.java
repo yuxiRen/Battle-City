@@ -39,10 +39,15 @@ public class MyPanel extends JPanel implements KeyListener, Runnable{
         g.fillRect(0, 0, 1000, 750);//draw a black panel
         drawTank(myTank.getX(), myTank.getY(), g, myTank.getDirection(), 0);
         //draw bullet
-        if (myTank.bullet != null && myTank.bullet.isLive) {
-            g.draw3DRect(myTank.bullet.x, myTank.bullet.y, 2, 2, false);
+        
+        for (int i = 0; i < myTank.bullets.size(); i++) {
+            Bullet bullet = myTank.bullets.get(i);
+            if (bullet != null && bullet.isLive) {
+                g.draw3DRect(bullet.x, bullet.y, 2, 2, false);
+            } else {
+                myTank.bullets.remove(bullet);
+            }
         }
-
         for (int i = 0; i < bombs.size(); i++) {
             Bomb bomb = bombs.get(i);
             if (bomb.life > 6) {
@@ -165,9 +170,11 @@ public class MyPanel extends JPanel implements KeyListener, Runnable{
                 myTank.moveLeft();
             }
         } else if (input == KeyEvent.VK_SPACE) {
+            /*myTank has only one bullet
             if (myTank.bullet == null || !myTank.bullet.isLive) {
-                myTank.shot();
-            }
+            myTank.shot();
+            }*/
+            myTank.shot();
         }
         this.repaint();
     }

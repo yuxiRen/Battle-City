@@ -1,3 +1,5 @@
+import java.util.Vector;
+
 public class MyTank extends Tank{
 
     public MyTank(int x, int y) {
@@ -5,8 +7,12 @@ public class MyTank extends Tank{
     }
 
     Bullet bullet = null;
+    Vector<Bullet> bullets = new Vector<>();
 
     public void shot() {
+        if (bullets.size() == 5) {
+            return;
+        }
         switch (getDirection()) {
             case 0:
                 bullet = new Bullet(getX() + 20, getY(), 0);
@@ -21,6 +27,7 @@ public class MyTank extends Tank{
                 bullet = new Bullet(getX(), getY() + 20, 3);
                 break;
         }
+        bullets.add(bullet);
         new Thread(bullet).start();
     }
 }
