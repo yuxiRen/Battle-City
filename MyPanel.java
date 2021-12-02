@@ -55,7 +55,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable{
                 bombs.remove(i); 
             }
         }
-        for (int i = 0; i < enemyNums; i++) {
+        for (int i = 0; i < enemyTanks.size(); i++) {
             EnemyTank et = enemyTanks.get(i);
             if (et.isLive) {
                 drawTank(et.getX(), et.getY(), g, et.getDirection(), 1);
@@ -114,6 +114,9 @@ public class MyPanel extends JPanel implements KeyListener, Runnable{
     }
 
     public void hitTank(Bullet bullet, EnemyTank enemyTank) {
+        if(!enemyTank.isLive) {
+            return;
+        }
         int tankDir = enemyTank.getDirection();
         int x = enemyTank.getX();
         int y = enemyTank.getY();
@@ -122,11 +125,13 @@ public class MyPanel extends JPanel implements KeyListener, Runnable{
             bullet.isLive = false;
             enemyTank.isLive = false;
             bombs.add(new Bomb(x, y));
+            enemyTanks.remove(enemyTank);
         } else if ((tankDir == 1 || tankDir == 3) &&
         (bullet.x > x && bullet.x < x + 60 && bullet.y > y && bullet.y < y + 40)) {
             bullet.isLive = false;
             enemyTank.isLive = false;
             bombs.add(new Bomb(x, y));
+            enemyTanks.remove(enemyTank);
         }
     }
     @Override
@@ -168,8 +173,8 @@ public class MyPanel extends JPanel implements KeyListener, Runnable{
                 e.printStackTrace();
             }
             if (myTank.bullet != null && myTank.bullet.isLive) {
-                for (EnemyTank et : enemyTanks) {
-                    hitTank(myTank.bullet, et);
+                for (int i = 0; i < enemyTanks.size(); i++) {
+                    hitTank(myTank.bullet, enemyTanks.get(i));
                 }
             }
             this.repaint();
