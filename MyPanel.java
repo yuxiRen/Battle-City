@@ -165,7 +165,9 @@ public class MyPanel extends JPanel implements KeyListener, Runnable{
                 myTank.moveLeft();
             }
         } else if (input == KeyEvent.VK_SPACE) {
-            myTank.shot();
+            if (myTank.bullet == null || !myTank.bullet.isLive) {
+                myTank.shot();
+            }
         }
         this.repaint();
     }
