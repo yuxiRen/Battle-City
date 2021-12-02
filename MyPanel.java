@@ -146,17 +146,25 @@ public class MyPanel extends JPanel implements KeyListener, Runnable{
         int input = e.getKeyCode();
         if (input == KeyEvent.VK_UP) {
             myTank.setDirection(0);
-            myTank.moveUp();
+            if(myTank.getY() > 0) {
+                myTank.moveUp();
+            }  
         } else if (input == KeyEvent.VK_RIGHT) {
             myTank.setDirection(1);
-            myTank.moveRight();
+            if (myTank.getX() + 60 < 1000) {
+                myTank.moveRight();
+            }
         } else if (input == KeyEvent.VK_DOWN) {
             myTank.setDirection(2);
-            myTank.moveDown();
+            if (myTank.getY() + 60 < 750) {
+                myTank.moveDown();
+            }
         } else if (input == KeyEvent.VK_LEFT) {
             myTank.setDirection(3);
-            myTank.moveLeft();
-        }else if (input == KeyEvent.VK_SPACE) {
+            if (myTank.getX() > 0) {
+                myTank.moveLeft();
+            }
+        } else if (input == KeyEvent.VK_SPACE) {
             myTank.shot();
         }
         this.repaint();
