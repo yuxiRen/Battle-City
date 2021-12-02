@@ -121,25 +121,38 @@ public class MyPanel extends JPanel implements KeyListener, Runnable{
     }
 
     public void hitTank(Bullet bullet, EnemyTank enemyTank) {
-        if(!enemyTank.isLive) {
+        if (!enemyTank.isLive) {
             return;
         }
         int tankDir = enemyTank.getDirection();
         int x = enemyTank.getX();
         int y = enemyTank.getY();
         if ((tankDir == 0 || tankDir == 2) &&
-        (bullet.x > x && bullet.x < x + 40 && bullet.y > y && bullet.y < y + 60)) {
+                (bullet.x > x && bullet.x < x + 40 && bullet.y > y && bullet.y < y + 60)) {
             bullet.isLive = false;
             enemyTank.isLive = false;
             bombs.add(new Bomb(x, y));
             enemyTanks.remove(enemyTank);
         } else if ((tankDir == 1 || tankDir == 3) &&
-        (bullet.x > x && bullet.x < x + 60 && bullet.y > y && bullet.y < y + 40)) {
+                (bullet.x > x && bullet.x < x + 60 && bullet.y > y && bullet.y < y + 40)) {
             bullet.isLive = false;
             enemyTank.isLive = false;
             bombs.add(new Bomb(x, y));
             enemyTanks.remove(enemyTank);
         }
+    }
+    
+    public void hitTanks() {
+        for (int j = 0; j < myTank.bullets.size(); j++) {
+            Bullet bullet = myTank.bullets.get(j);
+            if (bullet != null && bullet.isLive) {
+                for (int i = 0; i < enemyTanks.size(); i++) {
+                    hitTank(myTank.bullet, enemyTanks.get(i));
+                }
+            }
+        }
+        
+        
     }
     @Override
     public void keyTyped(KeyEvent e) {
@@ -191,11 +204,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if (myTank.bullet != null && myTank.bullet.isLive) {
-                for (int i = 0; i < enemyTanks.size(); i++) {
-                    hitTank(myTank.bullet, enemyTanks.get(i));
-                }
-            }
+            hitTanks();
             this.repaint();
         }
     }
