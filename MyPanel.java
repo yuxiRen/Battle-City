@@ -1,5 +1,4 @@
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Vector;
@@ -9,7 +8,12 @@ import javax.swing.JPanel;
 public class MyPanel extends JPanel implements KeyListener, Runnable{
     MyTank myTank = null;
     Vector<EnemyTank> enemyTanks = new Vector<>();
+    Vector<Bomb> bombs = new Vector<>();
     int enemyNums = 3;
+    
+    Image img1 = null;
+    Image img2 = null;
+    Image img3 = null;
 
     public MyPanel() {
         myTank = new MyTank(100, 100);
@@ -22,6 +26,9 @@ public class MyPanel extends JPanel implements KeyListener, Runnable{
             new Thread(bullet).start();
             enemyTanks.add(enemyTank);
         }
+        img1 = Toolkit.getDefaultToolkit().getImage(MyPanel.class.getResource("bomb_1.gif"));
+        img2 = Toolkit.getDefaultToolkit().getImage(MyPanel.class.getResource("bomb_2.gif"));
+        img3 = Toolkit.getDefaultToolkit().getImage(MyPanel.class.getResource("bomb_3.gif"));
     }
 
     @Override
@@ -34,6 +41,20 @@ public class MyPanel extends JPanel implements KeyListener, Runnable{
             g.draw3DRect(myTank.bullet.x, myTank.bullet.y, 2, 2, false);
         }
 
+        for (int i = 0; i < bombs.size(); i++) {
+            Bomb bomb = bombs.get(i);
+            if (bomb.life > 6) {
+                g.drawImage(img1, bomb.x, bomb.y, 60, 60, this);
+            } else if (bomb.life > 3) {
+                g.drawImage(img2, bomb.x, bomb.y, 60, 60, this);
+            } else {
+                g.drawImage(img3, bomb.x, bomb.y, 60, 60, this);
+            }
+            bomb.lifeDown();
+            if (bomb.life == 0) {
+                bombs.remove(i); 
+            }
+        }
         for (int i = 0; i < enemyNums; i++) {
             EnemyTank et = enemyTanks.get(i);
             if (et.isLive) {
@@ -92,18 +113,20 @@ public class MyPanel extends JPanel implements KeyListener, Runnable{
         }
     }
 
-    public static void hitTank(Bullet bullet, EnemyTank enemyTank) {
+    public void hitTank(Bullet bullet, EnemyTank enemyTank) {
         int tankDir = enemyTank.getDirection();
+        int x = enemyTank.getX();
+        int y = enemyTank.getY();
         if ((tankDir == 0 || tankDir == 2) &&
-                (bullet.x > enemyTank.getX() && bullet.x < enemyTank.getX() + 40
-        && bullet.y > enemyTank.getY() && bullet.y < enemyTank.getY() + 60)) {
+        (bullet.x > x && bullet.x < x + 40 && bullet.y > y && bullet.y < y + 60)) {
             bullet.isLive = false;
             enemyTank.isLive = false;
+            bombs.add(new Bomb(x, y));
         } else if ((tankDir == 1 || tankDir == 3) &&
-                (bullet.x > enemyTank.getX() && bullet.x < enemyTank.getX() + 60
-                        && bullet.y > enemyTank.getY() && bullet.y < enemyTank.getY() + 40)) {
+        (bullet.x > x && bullet.x < x + 60 && bullet.y > y && bullet.y < y + 40)) {
             bullet.isLive = false;
             enemyTank.isLive = false;
+            bombs.add(new Bomb(x, y));
         }
     }
     @Override
