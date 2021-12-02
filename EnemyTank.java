@@ -9,7 +9,26 @@ public class EnemyTank extends Tank implements Runnable {
     }
     @Override
     public void run() {
-        while(true) {
+        while (true) {
+            if (isLive && bullets.size() == 0) {
+                Bullet bullet = null;
+                switch (getDirection()) {
+                    case 0:
+                        bullet = new Bullet(getX() + 20, getY(), 0);
+                        break;
+                    case 1:
+                        bullet = new Bullet(getX() + 60, getY() + 20, 1);
+                        break;
+                    case 2:
+                        bullet = new Bullet(getX() + 20, getY() + 60, 2);
+                        break;
+                    case 3:
+                        bullet = new Bullet(getX(), getY() + 20, 3);
+                        break;
+                }
+                bullets.add(bullet);
+                new Thread(bullet).start();
+            }
             switch (getDirection()) {
                 case 0:
                     for (int i = 0; i < 30; i++) {
