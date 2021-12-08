@@ -35,10 +35,21 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         img3 = Toolkit.getDefaultToolkit().getImage(MyPanel.class.getResource("bomb_3.gif"));
     }
 
+    public void showInfo(Graphics g) {
+        g.setColor(Color.BLACK);
+        Font font = new Font("Consolas", Font.BOLD, 15);
+        g.setFont(font);
+        g.drawString("Number of tanks destroyed:", 1020, 30);
+        drawTank(1020, 60, g, 0, 1);
+        g.setColor(Color.BLACK);
+        g.drawString("0", 1080, 100);
+    }
+
     @Override
     public void paint(Graphics g) {
         super.paint(g);
         g.fillRect(0, 0, 1000, 750);// draw a black panel
+        showInfo(g);
         if (myTank != null && myTank.isLive) {
             drawTank(myTank.getX(), myTank.getY(), g, myTank.getDirection(), 0);
         }
