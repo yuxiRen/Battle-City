@@ -5,12 +5,12 @@ import java.util.Vector;
 
 import javax.swing.JPanel;
 
-public class MyPanel extends JPanel implements KeyListener, Runnable{
+public class MyPanel extends JPanel implements KeyListener, Runnable {
     MyTank myTank = null;
     Vector<EnemyTank> enemyTanks = new Vector<>();
     Vector<Bomb> bombs = new Vector<>();
     int enemyNums = 3;
-    
+
     Image img1 = null;
     Image img2 = null;
     Image img3 = null;
@@ -20,10 +20,12 @@ public class MyPanel extends JPanel implements KeyListener, Runnable{
         myTank.setSpeed(3);
         for (int i = 0; i < enemyNums; i++) {
             EnemyTank enemyTank = new EnemyTank(100 * (i + 1), 0);
+            enemyTank.setEnemyTanks(enemyTanks);
             enemyTank.setDirection(2);
-            //start enemyTank thread
+            // start enemyTank thread
             new Thread(enemyTank).start();
-            Bullet bullet = new Bullet(enemyTank.getX() + 20, enemyTank.getY() + 60, enemyTank.getDirection());
+            Bullet bullet = new Bullet(enemyTank.getX() + 20, enemyTank.getY() + 60,
+                    enemyTank.getDirection());
             enemyTank.bullets.add(bullet);
             new Thread(bullet).start();
             enemyTanks.add(enemyTank);
@@ -36,11 +38,11 @@ public class MyPanel extends JPanel implements KeyListener, Runnable{
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        g.fillRect(0, 0, 1000, 750);//draw a black panel
-        if (myTank != null && myTank.isLive)  {
+        g.fillRect(0, 0, 1000, 750);// draw a black panel
+        if (myTank != null && myTank.isLive) {
             drawTank(myTank.getX(), myTank.getY(), g, myTank.getDirection(), 0);
         }
-        //draw bullet
+        // draw bullet
         for (int i = 0; i < myTank.bullets.size(); i++) {
             Bullet bullet = myTank.bullets.get(i);
             if (bullet != null && bullet.isLive) {
@@ -60,7 +62,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable{
             }
             bomb.lifeDown();
             if (bomb.life == 0) {
-                bombs.remove(i); 
+                bombs.remove(i);
             }
         }
         for (int i = 0; i < enemyTanks.size(); i++) {
@@ -90,28 +92,28 @@ public class MyPanel extends JPanel implements KeyListener, Runnable{
                 break;
         }
         switch (direction) {
-            case 0: //Up
+            case 0: // Up
                 g.fill3DRect(x, y, 10, 60, false);
                 g.fill3DRect(x + 30, y, 10, 60, false);
                 g.fill3DRect(x + 10, y + 10, 20, 40, false);
                 g.fillOval(x + 10, y + 20, 20, 20);
                 g.drawLine(x + 20, y + 30, x + 20, y);
                 break;
-            case 1: //Right
+            case 1: // Right
                 g.fill3DRect(x, y, 60, 10, false);
                 g.fill3DRect(x, y + 30, 60, 10, false);
                 g.fill3DRect(x + 10, y + 10, 40, 20, false);
                 g.fillOval(x + 20, y + 10, 20, 20);
                 g.drawLine(x + 30, y + 20, x + 60, y + 20);
                 break;
-            case 2: //Down
+            case 2: // Down
                 g.fill3DRect(x, y, 10, 60, false);
                 g.fill3DRect(x + 30, y, 10, 60, false);
                 g.fill3DRect(x + 10, y + 10, 20, 40, false);
                 g.fillOval(x + 10, y + 20, 20, 20);
                 g.drawLine(x + 20, y + 30, x + 20, y + 60);
                 break;
-            case 3: //Left
+            case 3: // Left
                 g.fill3DRect(x, y, 60, 10, false);
                 g.fill3DRect(x, y + 30, 60, 10, false);
                 g.fill3DRect(x + 10, y + 10, 40, 20, false);
@@ -128,28 +130,28 @@ public class MyPanel extends JPanel implements KeyListener, Runnable{
         int tankDir = tank.getDirection();
         int x = tank.getX();
         int y = tank.getY();
-        if ((tankDir == 0 || tankDir == 2) &&
-                (bullet.x > x && bullet.x < x + 40 && bullet.y > y && bullet.y < y + 60)) {
+        if ((tankDir == 0 || tankDir == 2)
+                && (bullet.x > x && bullet.x < x + 40 && bullet.y > y && bullet.y < y + 60)) {
             bullet.isLive = false;
             tank.isLive = false;
             bombs.add(new Bomb(x, y));
             enemyTanks.remove(tank);
-        } else if ((tankDir == 1 || tankDir == 3) &&
-                (bullet.x > x && bullet.x < x + 60 && bullet.y > y && bullet.y < y + 40)) {
+        } else if ((tankDir == 1 || tankDir == 3)
+                && (bullet.x > x && bullet.x < x + 60 && bullet.y > y && bullet.y < y + 40)) {
             bullet.isLive = false;
             tank.isLive = false;
             bombs.add(new Bomb(x, y));
             enemyTanks.remove(tank);
         }
     }
-    
+
     public void hitEnemyTanks() {
         for (int j = 0; j < myTank.bullets.size(); j++) {
             Bullet bullet = myTank.bullets.get(j);
-                for (int i = 0; i < enemyTanks.size(); i++) {
-                    hitTank(bullet, enemyTanks.get(i));
-                }
-            
+            for (int i = 0; i < enemyTanks.size(); i++) {
+                hitTank(bullet, enemyTanks.get(i));
+            }
+
         }
     }
 
@@ -162,10 +164,10 @@ public class MyPanel extends JPanel implements KeyListener, Runnable{
             }
         }
     }
-    
+
     @Override
     public void keyTyped(KeyEvent e) {
-        
+
     }
 
     @Override
@@ -173,9 +175,9 @@ public class MyPanel extends JPanel implements KeyListener, Runnable{
         int input = e.getKeyCode();
         if (input == KeyEvent.VK_UP) {
             myTank.setDirection(0);
-            if(myTank.getY() > 0) {
+            if (myTank.getY() > 0) {
                 myTank.moveUp();
-            }  
+            }
         } else if (input == KeyEvent.VK_RIGHT) {
             myTank.setDirection(1);
             if (myTank.getX() + 60 < 1000) {
@@ -192,29 +194,30 @@ public class MyPanel extends JPanel implements KeyListener, Runnable{
                 myTank.moveLeft();
             }
         } else if (input == KeyEvent.VK_SPACE) {
-            /*myTank has only one bullet
-            if (myTank.bullet == null || !myTank.bullet.isLive) {
-            myTank.shot();
-            }*/
+            /*
+             * myTank has only one bullet if (myTank.bullet == null || !myTank.bullet.isLive) {
+             * myTank.shot(); }
+             */
             myTank.shot();
         }
         this.repaint();
     }
-    
+
     @Override
     public void keyReleased(KeyEvent e) {
 
     }
+
     @Override
     public void run() {
-        while(true) {
+        while (true) {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             hitEnemyTanks();
-            hitMyTank(); 
+            hitMyTank();
             this.repaint();
         }
     }
