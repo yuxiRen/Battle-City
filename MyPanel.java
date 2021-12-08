@@ -42,7 +42,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         g.drawString("Number of tanks destroyed:", 1020, 30);
         drawTank(1020, 60, g, 0, 1);
         g.setColor(Color.BLACK);
-        g.drawString("0", 1080, 100);
+        g.drawString(Recorder.getDestroyedEnemyTankNum() + "", 1080, 100);
     }
 
     @Override
@@ -147,12 +147,18 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
             tank.isLive = false;
             bombs.add(new Bomb(x, y));
             enemyTanks.remove(tank);
+            if (tank instanceof EnemyTank) {
+                Recorder.adddestroyedEnemyTankNum();
+            }
         } else if ((tankDir == 1 || tankDir == 3)
                 && (bullet.x > x && bullet.x < x + 60 && bullet.y > y && bullet.y < y + 40)) {
             bullet.isLive = false;
             tank.isLive = false;
             bombs.add(new Bomb(x, y));
             enemyTanks.remove(tank);
+            if (tank instanceof EnemyTank) {
+                Recorder.adddestroyedEnemyTankNum();
+            }
         }
     }
 
@@ -162,7 +168,6 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
             for (int i = 0; i < enemyTanks.size(); i++) {
                 hitTank(bullet, enemyTanks.get(i));
             }
-
         }
     }
 
