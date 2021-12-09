@@ -12,28 +12,52 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     MyTank myTank = null;
     Vector<EnemyTank> enemyTanks = new Vector<>();
     Vector<Bomb> bombs = new Vector<>();
+    Vector<Info> records = new Vector<>();
     int enemyNums = 3;
 
     Image img1 = null;
     Image img2 = null;
     Image img3 = null;
 
-    public MyPanel() {
+    public MyPanel(String choice) {
+        records = Recorder.getRecords();
         Recorder.setEnemyTanks(enemyTanks);
         myTank = new MyTank(500, 500);
         myTank.setSpeed(3);
-        for (int i = 0; i < enemyNums; i++) {
-            EnemyTank enemyTank = new EnemyTank(100 * (i + 1), 0);
-            enemyTank.setEnemyTanks(enemyTanks);
-            enemyTank.setDirection(2);
-            // start enemyTank thread
-            new Thread(enemyTank).start();
-            Bullet bullet = new Bullet(enemyTank.getX() + 20, enemyTank.getY() + 60,
-                    enemyTank.getDirection());
-            enemyTank.bullets.add(bullet);
-            new Thread(bullet).start();
-            enemyTanks.add(enemyTank);
+        switch (choice) {
+            case "n":
+                for (int i = 0; i < enemyNums; i++) {
+                    EnemyTank enemyTank = new EnemyTank(100 * (i + 1), 0);
+                    enemyTank.setEnemyTanks(enemyTanks);
+                    enemyTank.setDirection(2);
+                    // start enemyTank thread
+                    new Thread(enemyTank).start();
+                    Bullet bullet = new Bullet(enemyTank.getX() + 20, enemyTank.getY() + 60,
+                            enemyTank.getDirection());
+                    enemyTank.bullets.add(bullet);
+                    new Thread(bullet).start();
+                    enemyTanks.add(enemyTank);
+                }
+                break;
+            case "y":
+                for (int i = 0; i < records.size(); i++) {
+                    Info record = records.get(i);
+                    EnemyTank enemyTank = new EnemyTank(record.getX(), record.getY());
+                    enemyTank.setEnemyTanks(enemyTanks);
+                    enemyTank.setDirection(record.getDirection());
+                    // start enemyTank thread
+                    new Thread(enemyTank).start();
+                    Bullet bullet = new Bullet(enemyTank.getX() + 20, enemyTank.getY() + 60,
+                            enemyTank.getDirection());
+                    enemyTank.bullets.add(bullet);
+                    new Thread(bullet).start();
+                    enemyTanks.add(enemyTank);
+                }
+                break;
+            default:
+                System.out.println("Please enter y or n");
         }
+
         img1 = Toolkit.getDefaultToolkit().getImage(MyPanel.class.getResource("bomb_1.gif"));
         img2 = Toolkit.getDefaultToolkit().getImage(MyPanel.class.getResource("bomb_2.gif"));
         img3 = Toolkit.getDefaultToolkit().getImage(MyPanel.class.getResource("bomb_3.gif"));
