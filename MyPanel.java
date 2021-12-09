@@ -1,8 +1,11 @@
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Vector;
-
 import javax.swing.JPanel;
 
 public class MyPanel extends JPanel implements KeyListener, Runnable {
@@ -16,6 +19,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     Image img3 = null;
 
     public MyPanel() {
+        Recorder.setEnemyTanks(enemyTanks);
         myTank = new MyTank(500, 500);
         myTank.setSpeed(3);
         for (int i = 0; i < enemyNums; i++) {
