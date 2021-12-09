@@ -61,6 +61,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         img1 = Toolkit.getDefaultToolkit().getImage(MyPanel.class.getResource("bomb_1.gif"));
         img2 = Toolkit.getDefaultToolkit().getImage(MyPanel.class.getResource("bomb_2.gif"));
         img3 = Toolkit.getDefaultToolkit().getImage(MyPanel.class.getResource("bomb_3.gif"));
+        new AePlayWave("111.wav").start();
     }
 
     public void showInfo(Graphics g) {
